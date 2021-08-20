@@ -24,8 +24,3 @@ class ClassificationBlock(RichRepr, Sequential):
 
     def __repr__(self):
         return super(ClassificationBlock, self).__repr__(self.in_channels, self.out_classes)
-
-
-if __name__ == '__main__':
-    classification_block = ClassificationBlock(10, 20)
-    print(classification_block)
