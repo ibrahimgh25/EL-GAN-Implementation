@@ -14,13 +14,13 @@ class DenseLayer(RichRepr, Sequential):
     Consists of:
 
     - Batch Normalization
-    - ReLU
+    - Non-linearity
     - (Bottleneck)
     - 3x3 Convolution
     - (Dropout)
     """
 
-    def __init__(self, in_channels: int, out_channels: int,
+    def __init__(self, in_channels: int, out_channels: int, nonlinearity=ReLU,
                  bottleneck_ratio: Optional[int] = None, dropout: float = 0.0):
         super(DenseLayer, self).__init__()
 
@@ -28,7 +28,7 @@ class DenseLayer(RichRepr, Sequential):
         self.out_channels = out_channels
 
         self.add_module('norm', BatchNorm2d(num_features=in_channels))
-        self.add_module('relu', ReLU(inplace=True))
+        self.add_module('nonlinearity', nonlinearity(inplace=True))
 
         if bottleneck_ratio is not None:
             self.add_module('bottleneck', Bottleneck(in_channels, bottleneck_ratio * out_channels))
