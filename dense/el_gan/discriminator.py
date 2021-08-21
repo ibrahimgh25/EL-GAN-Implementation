@@ -1,41 +1,12 @@
-import torch
-from torch.types import Number
-
-from torch.nn.functional import softmax
-from ..fc_densenet import FCDenseNet
-from ..densenet import FeatureBlock, ClassificationBlock, Transition
-from ..shared import DenseBlock
-
 from itertools import zip_longest
 
+from torch import cat
 from torch.nn import Sequential
-from torch.nn import functional as F
+from torch.nn.functional import softmax
+from torch.nn import ELU
 
+from ..densenet import FeatureBlock, ClassificationBlock, Transition
 from ..shared import DenseBlock
-
-class Generator(FCDenseNet):
-    def __init__(self):
-        super().__init__( in_channels = 3,
-                     out_channels = 2,
-                     initial_num_features = 75,
-                     dropout = 0.1,
-
-                    down_dense_growth_rates = 18,
-                    down_dense_bottleneck_ratios = None,
-                    down_dense_num_layers = (1, 2, 3, 4, 5, 6, 8),
-                    down_transition_compression_factors = 0.8,
-
-                    middle_dense_growth_rate = 18,
-                    middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 8,
-
-                    up_dense_growth_rates = 18,
-                    up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (8, 6, 5, 4, 3, 2, 1))
-
-    def forward(self, x):
-        res = super().forward(x)
-        return softmax(res)
 
 class Discriminator(Sequential):
     def __init__( self,
@@ -82,7 +53,7 @@ class Discriminator(Sequential):
                                     dropout, dense_blocks_bottleneck_ratios,
                                     transition_blocks_compression_factors,
                                     dense_blocks_growth_rates)
-        # Return the current channels to be used by nex part
+        # Return the current channels to be used by next part
         return model, current_channels
 
     def _common_part(self, 
@@ -103,10 +74,6 @@ class Discriminator(Sequential):
                                     dropout, dense_blocks_bottleneck_ratios,
                                     transition_blocks_compression_factors,
                                     dense_blocks_growth_rates)
-        # region Classification block
-        # model.add_module('classification', ClassificationBlock(current_channels, output_classes, 936))
-        # endregion
-
         return model, current_channels
 
     def add_demse_blocks(self, model,
@@ -128,7 +95,8 @@ class Discriminator(Sequential):
                 'num_layers': nl,
                 'dense_layer_params': {
                     'dropout': dropout,
-                    'bottleneck_ratio': br
+                    'bottleneck_ratio': br,
+                    'nonlinearity':ELU
                 }
             }
             for gr, nl, br in zip(dense_blocks_growth_rates, num_layers, dense_blocks_bottleneck_ratios)
@@ -160,30 +128,13 @@ class Discriminator(Sequential):
         return value
     
     def forward(self, img, markings):
+        # You first pass the label through the markings head
         label_part = self.markings_head(markings)
+        # Then pass the image through the image head
         img_part = self.full_img_head(img)
-        x_cat = torch.cat((label_part, img_part), 1)
-        # Embedding to be used to calculate the embedding loss
+        # Concatenate the two outputs into one tensor
+        x_cat = cat((label_part, img_part), 1)
         embedding = self.common_part(x_cat)
         y = self.classification_block(embedding)
+        # Embedding is to be used to calculate the embedding loss
         return softmax(y, dim=1), embedding
-
-def pixel_cce(y, y_predict):
-    ''' An implementation for pixel-wise cross entropy'''
-    y_predict = torch.add(y_predict, torch.tensor(1e-15))
-    w = torch.tensor(y.shape[-2])
-    h = torch.tensor(y.shape[-1])
-    loss = -torch.sum(torch.xlogy(y, y_predict))
-    loss = torch.divide(loss, torch.multiply(w, h))
-    return loss
-
-def embedding_loss(fake_embedding, real_embedding):
-    ''' Basically euclidean distance'''
-    return torch.cdist(fake_embedding, real_embedding)
-
-def disguise_label(label, low_end=0, high_end=0.1):
-    ''' Can be used to subtract and add random values to a label so it isn't easily spotted by a discriminator'''
-    noise = torch.FloatTensor(*label.size()).uniform_(low_end, high_end)
-    mask = label
-    mask[mask==0] = -1
-    return torch.subtract(label, torch.multiply(noise, mask))
