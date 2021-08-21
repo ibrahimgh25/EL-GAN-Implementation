@@ -11,7 +11,6 @@ from .fc_densenet import (
     TransitionUp,
     TransitionDown,
     CenterCropConcat,
-    FCDenseNet103,
 )
 from .shared import (
     Flatten,
