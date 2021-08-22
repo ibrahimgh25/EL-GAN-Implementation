@@ -17,7 +17,7 @@ def embedding_loss(fake_embedding, real_embedding):
     cdist = lambda fake_embedding, real_embedding: -torch.sum(torch.cdist(fake_embedding, real_embedding))
     dist = torch.tensor([cdist(x, y) for x, y in zip(real_embedding, fake_embedding)])
     dist.requires_grad = True
-    return dist
+    return dist.sum()
 
 def disguise_label(label, low_end=0, high_end=0.1, device='cpu'):
     ''' Can be used to subtract and add random values to a label so it isn't easily spotted by a discriminator'''
