@@ -1,3 +1,4 @@
+from torch import save, no_grad
 from torch.nn import Sequential
 
 class Trainer(Sequential):
@@ -12,13 +13,20 @@ class Trainer(Sequential):
         if lr_scheduler:
             self.lr_scheduler = lr_scheduler(optimizer=self.optimizer, **lr_scheduler_params)
 
-    def forward(self, *input_):
-        return self.model.forward(*input_)
+    def forward(self, *inputs_):
+        return self.model.forward(*inputs_)
     
-    def backwards(self, y, y_predicted, update_weights=True):
-        # y = y.detach()
-        loss = self.criterion(y, y_predicted)
-        print(loss.size())
+    def test(self, *inputs_):
+        with no_grad():
+            output = self.model.forward(*inputs_)
+        return output
+    
+    def get_loss(self, y, y_predicted, *args, **kwargs):
+        loss = self.criterion(y, y_predicted, *args, **kwargs)
+        return loss.detach()
+    
+    def backwards(self, y, y_predicted, update_weights=True, *args, **kwargs):
+        loss = self.criterion(y, y_predicted, *args, **kwargs)
         if update_weights:
             loss.backward()
             self.optimizer.step()
@@ -26,3 +34,6 @@ class Trainer(Sequential):
                 self.lr_scheduler.step()
         self.optimizer.zero_grad()
         return loss.detach()
+    
+    def save_model_img(self, save_path):
+        save(self.model, save_path)
