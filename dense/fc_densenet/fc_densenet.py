@@ -151,7 +151,6 @@ class FCDenseNet(Module):
             current_channels = block.out_channels
             self.up_dense.add_module(f'block_{i}', block)
         # endregion
-        print(current_channels)
         # region Final convolution
         self.final = Conv2d(current_channels, out_channels, kernel_size=1, bias=False)
         # endregion
