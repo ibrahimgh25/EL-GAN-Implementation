@@ -5,8 +5,9 @@ from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ExponentialLR
 
-from dense.el_gan import Generator, Discriminator
+# from dense.el_gan import Generator, Discriminator
 from training_utils import *
+from training_utils.simplified_models import Discriminator, Generator
 
 ########################################################################################
 ######################## Defining and Initializing the Networks ########################
@@ -48,7 +49,7 @@ gen_trainer = Trainer(generator, gen_loss,
 
 disc_trainer = Trainer(disc, embedding_loss,
                       SGD, sgd_params,
-                      lr_scheduler, scheduler_params)
+                      ExponentialLR, scheduler_params)
 ################################# End Region ###########################################
 
 ########################################################################################
@@ -58,7 +59,7 @@ disc_trainer = Trainer(disc, embedding_loss,
 training_json = r'label_data_mini.json'
 testing_json = r'label_data_mini.json'
 # The root directory is the directory where the dataset is located
-root_dir = r'/content/drive/MyDrive/Mini Dataset'
+root_dir = r'C:\Users\user\Desktop\Mini Dataset'
 
 train_set = LaneDataSet(training_json, root_dir)
 test_set = LaneDataSet(testing_json, root_dir)
@@ -88,7 +89,7 @@ for epoch in range(EPOCHS):
     for i, data in enumerate(train_gen_loader):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = inputs.to(device).float(), labels.to(device).flaot()
+        inputs, labels = inputs.to(device).float(), labels.to(device).float()
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
@@ -109,7 +110,7 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every 100 iterations
-        if not i % 100 and i != 0:
+        if not i % 1 or True:#and i != 0:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
@@ -117,13 +118,13 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
-
+          break
     # Testing the networks
     gen_running_loss, disc_running_loss = 0.0, 0.0
     for i, data in enumerate(test_gen_loader):
       # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = inputs.to(device).float(), labels.to(device).flaot()
+        inputs, labels = inputs.to(device).float(), labels.to(device).float()
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
@@ -144,7 +145,7 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every 100 iterations
-        if not i % 100 and i != 0:
+        if not i % 100 or True:# and i != 0:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
@@ -152,3 +153,6 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
+          break
+
+writer.exit()
