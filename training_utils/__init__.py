@@ -1,5 +1,5 @@
 from .utils import (
-    pixel_cce,
+    gen_loss,
     embedding_loss,
     disguise_label
 )

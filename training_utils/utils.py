@@ -1,13 +1,13 @@
 import torch
 
-def pixel_cce(y, y_predict):
+def gen_loss(y, y_predict, adverserial_loss=0, alpha=1.0):
     ''' An implementation for pixel-wise cross entropy'''
     y_predict = torch.add(y_predict, torch.tensor(1e-15))
     w = torch.tensor(y.shape[-2])
     h = torch.tensor(y.shape[-1])
     loss = -torch.sum(torch.xlogy(y, y_predict))
     loss = torch.divide(loss, torch.multiply(w, h))
-    return loss
+    return loss - alpha * adverserial_loss
 
 def embedding_loss(fake_embedding, real_embedding):
     ''' Basically euclidean distance'''
