@@ -19,5 +19,6 @@ The discriminator in EL-GAN (as mentioned before) has two heads, they take in th
   <img src="resources/discriminator.png" width="350" alt="The two-headed densenet used for the discriminator from EL-GAN">
 </p>
 The two head converge after 2 dense blocks, where there output is concatenated and continues through 5 more dense blocks. The embedding is the output of the last dense block (the 1x1 conv and the classification layer are there more for symmetry than anything else, they aren't necessary in the network.
+
 ## Thanks
 The repository was built on top of this [repository](https://github.com/baldassarreFe/pytorch-densenet-tiramisu) owned by Federico Baldassarre - the referenced repository offered an implementation for FCDenseNets and DenseNets. I would like to thank the author, whose repository not only helped me for the implementation and getting a better understanding for DenseNets, but also with organizing and presenting a project on GitHub.
