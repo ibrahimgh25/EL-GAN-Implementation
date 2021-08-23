@@ -7,6 +7,9 @@ The model introduced relied heavily on the Denseblocks which were used in  both 
 
 ## Generator
 The generator in the model was a FC-DenseNet (fully connected dense network), which was introdued in [this](https://openaccess.thecvf.com/content_cvpr_2017_workshops/w13/papers/Jegou_The_One_Hundred_CVPR_2017_paper.pdf) paper. The architecture of the generator could be seen in the image below.
-![Generator Architecture](resources/generator_architecture.png)
+![Generator Architecture]()
+<p align="center">
+  <img src="resources/generator_architecture.png" width="350" alt="The fully-connected densenet used for the generator from EL-GAN">
+</p>
 ## Thanks
 The repository was built on top of this [repository](https://github.com/baldassarreFe/pytorch-densenet-tiramisu) owned by Federico Baldassarre - the referenced repository offered an implementation for FCDenseNets and DenseNets. I would like to thank the author, whose repository not only helped me for the implementation and getting a better understanding for DenseNets, but also with organizing and presenting a project on GitHub.
