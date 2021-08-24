@@ -2,7 +2,7 @@
 This repository offers an implementation for the Embedded loss GAN. The network was introduced in the paper [EL-GAN: Embedding Loss Driven Generative
 Adversarial Networks for Lane Detection](https://arxiv.org/pdf/1806.05525) by Mohsen Ghafoorian, Cedric Nugteren, Nora Baka, Olaf Booij, Michael Hofmann.
 ## How to use
-After downloading the repository you can download the third party dependencies from requirements.txt.
+After downloading the code from this repository you can download the third party dependencies from requirements.txt.
 ## Introduction
 The model introduced relied heavily on the Denseblocks which were used in  both the generator and the discriminator, it also introduced a novel approach to the discriminator, where the loss was caculated as a distance between the embeddings of the fake labels (labels produced by the generator), and the real labels (ground truth). They called this loss the embedding loss, they also passed not only the labels to the discriminator, but also the original images the labels respond to, creating a discriminator with "two heads".
 <b>Note:</b> Labels in the above paragraph and later on refers to the 2-channel image containing the lane markings.
