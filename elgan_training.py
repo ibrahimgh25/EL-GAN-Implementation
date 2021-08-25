@@ -110,7 +110,7 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every 100 iterations
-        if not i % 1 or True:#and i != 0:
+        if not i % 100 and i != 0:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
@@ -118,7 +118,10 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
-          break
+    
+    # Save the models after each epoch
+    gen_trainer.save(f'models/generator/generator_epoch_{epoch}.ptmdl')
+    disc_trainer.save(f'models/discriminator/discriminator_epoch_{epoch}.ptmdl')
     # Testing the networks
     gen_running_loss, disc_running_loss = 0.0, 0.0
     for i, data in enumerate(test_gen_loader):
@@ -145,7 +148,7 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every 100 iterations
-        if not i % 100 or True:# and i != 0:
+        if not i % 100 and i != 0:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
@@ -153,6 +156,6 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
-          break
+     
 
 writer.exit()
