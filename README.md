@@ -16,7 +16,7 @@ The downwards path is created by connecting Down_n blocks and Up_n blocks, a don
 ## Discriminator
 The discriminator in EL-GAN (as mentioned before) has two heads, they take in the original images and the labels 
 <p align="center">
-  <img src="resources/discriminator_architecture.jpg" width="350" alt="The two-headed densenet used for the discriminator from EL-GAN">
+  <img src="resources/discriminator_architecture.png" width="350" alt="The two-headed densenet used for the discriminator from EL-GAN">
 </p>
 The two head converge after 2 dense blocks, where there output is concatenated and continues through 5 more dense blocks. The embedding is the output of the last dense block (the 1x1 conv and the classification layer are there more for symmetry than anything else, they aren't necessary in the network.
 
