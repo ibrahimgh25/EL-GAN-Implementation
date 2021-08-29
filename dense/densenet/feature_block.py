@@ -1,4 +1,5 @@
-from torch.nn import Sequential, Conv2d, BatchNorm2d, ReLU, MaxPool2d
+from torch.nn import Sequential, Conv2d, BatchNorm2d, MaxPool2d
+from torch.nn.modules.activation import ReLU
 
 from ..utils import RichRepr
 

@@ -3,7 +3,7 @@ from itertools import zip_longest
 from torch import cat
 from torch.nn import Sequential
 from torch.nn.functional import softmax
-from torch.nn import ELU
+from torch.nn.modules.activation import ELU
 
 from ..densenet import FeatureBlock, ClassificationBlock, Transition
 from ..shared import DenseBlock
