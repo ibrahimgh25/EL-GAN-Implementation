@@ -1,7 +1,5 @@
-import sys, os
 import torch
 from torch.optim import Adam, SGD
-from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ExponentialLR
 
