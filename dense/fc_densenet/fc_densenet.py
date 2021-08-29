@@ -1,6 +1,6 @@
 from typing import Optional, Sequence, Union
 
-from torch.nn import Module, Conv2d, BatchNorm2d, Linear, init
+from torch.nn import Module, Conv2d, BatchNorm2d, Linear, init, ReLU
 from torch.nn import functional as F
 
 from .transition_down import TransitionDown
@@ -36,7 +36,9 @@ class FCDenseNet(Module):
 
                  up_dense_growth_rates: Union[int, Sequence[int]] = 16,
                  up_dense_bottleneck_ratios: Union[Optional[int], Sequence[Optional[int]]] = None,
-                 up_dense_num_layers: Union[int, Sequence[int]] = (12, 10, 7, 5, 4)):
+                 up_dense_num_layers: Union[int, Sequence[int]] = (12, 10, 7, 5, 4),
+                 
+                 activation=ReLU):
         super(FCDenseNet, self).__init__()
 
         # region Parameters handling
@@ -75,7 +77,8 @@ class FCDenseNet(Module):
                 'num_layers': nl,
                 'dense_layer_params': {
                     'dropout': dropout,
-                    'bottleneck_ratio': br
+                    'bottleneck_ratio': br,
+                    'nonlinearity':activation
                 }
             }
             for gr, nl, br in
@@ -113,7 +116,8 @@ class FCDenseNet(Module):
             concat_input=True,
             dense_layer_params={
                 'dropout': dropout,
-                'bottleneck_ratio': middle_dense_bottleneck
+                'bottleneck_ratio': middle_dense_bottleneck,
+                'nonlinearity':activation
             })
         current_channels = self.middle.out_channels
         # endregion
@@ -132,7 +136,8 @@ class FCDenseNet(Module):
                 'num_layers': nl,
                 'dense_layer_params': {
                     'dropout': dropout,
-                    'bottleneck_ratio': br
+                    'bottleneck_ratio': br,
+                    'nonlinearity':activation
                 }
             }
             for gr, nl, br in
