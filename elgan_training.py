@@ -38,7 +38,7 @@ parts_to_initialize = [
               disc.classification_block
 ]
 for module in parts_to_initialize:
-  module.apply(initialize)
+  modeul = module.apply(initialize)
 # Now we create the trainer in an effort to make our code a little less messy
 adam_params = {'lr':5e-4, 'betas':(0.9, 0.99), 'weight_decay':3e-4}
 sgd_params = {'lr':1e-5, 'weight_decay':3e-4}
