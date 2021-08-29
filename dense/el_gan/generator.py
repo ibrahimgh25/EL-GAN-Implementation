@@ -1,4 +1,5 @@
 from torch.nn.functional import softmax
+from torch.nn.modules.activation import LeakyReLU
 from ..fc_densenet import FCDenseNet
 
 class Generator(FCDenseNet):
@@ -19,7 +20,9 @@ class Generator(FCDenseNet):
 
                     up_dense_growth_rates = 18,
                     up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (8, 6, 5, 4, 3, 2, 1))
+                    up_dense_num_layers = (8, 6, 5, 4, 3, 2, 1),
+                    
+                    activation=LeakyReLU)
 
     def forward(self, x):
         res = super().forward(x)
