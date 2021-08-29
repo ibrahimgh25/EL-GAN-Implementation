@@ -97,7 +97,7 @@ for epoch in range(EPOCHS):
         # Update the generator if now's its turn
         gen_loss = gen_trainer.backwards(labels, gen_output, i % 500 < 300)
         # Detach the output from the generator
-        gen_output = gen_output.detach()
+        gen_output = process_gen_output(gen_output.detach())
         # Run the the discriminator on the fake and real markings
         real_embedding = disc_trainer(inputs, labels)
         fake_embedding = disc_trainer(inputs, gen_output)
@@ -135,7 +135,7 @@ for epoch in range(EPOCHS):
         # Update the generator if now's its turn
         gen_loss = gen_trainer.get_loss(labels, gen_output)
         # Detach the output from the generator
-        gen_output = gen_output.detach()
+        gen_output = process_gen_output(gen_output.detach())
         # Run the the discriminator on the fake and real markings
         real_embedding = disc_trainer.test(inputs, labels)
         fake_embedding = disc_trainer.test(inputs, gen_output)
