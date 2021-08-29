@@ -25,3 +25,8 @@ def disguise_label(label, low_end=0, high_end=0.1, device='cpu'):
     mask = torch.clone(label)
     mask[mask==0] = -1
     return torch.subtract(label, torch.multiply(noise, mask))
+
+def process_gen_output(gen_output):
+    ''' Sets the class as the class with the highest probabilities'''
+    gen_output[gen_output > 0.5] = 1
+    gen_output[gen_output <= 0.5] = 0
