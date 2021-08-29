@@ -10,7 +10,7 @@ The model introduced relied heavily on the Denseblocks which were used in  both 
 ## Generator
 The generator in the model was a FC-DenseNet (fully connected dense network), which was introdued in [this](https://openaccess.thecvf.com/content_cvpr_2017_workshops/w13/papers/Jegou_The_One_Hundred_CVPR_2017_paper.pdf) paper. The architecture of the generator could be seen in the image below.
 <p align="center">
-  <img src="resources/generator_architecture.png" width="350" alt="The fully-connected densenet used for the generator from EL-GAN">
+  <img src="resources/generator_architecture.png" width="350" alt="The fully-connected densenet used for the generator from EL-GAN" background-color=#fff>
 </p>
 The downwards path is created by connecting Down_n blocks and Up_n blocks, a donwn (up) block is a dense block with n denselayers and a tranistion down (up) blocks. There architecure can be found in the [original repository](https://github.com/baldassarreFe/pytorch-densenet-tiramisu) by Fredrico Baldassarre. As seen in the image above the layers in the down path are [1, 2, 3, 4, 5, 6, 8] layers blocks, there an 8 layers block in the middle, and [8, 6, 5, 4, 3, 2, 1] layers blocks in the up path.
 ## Discriminator
