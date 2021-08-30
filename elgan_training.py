@@ -57,10 +57,11 @@ disc_trainer = Trainer(disc, embedding_loss,
 training_json = r'label_data_mini.json'
 testing_json = r'label_data_mini.json'
 # The root directory is the directory where the dataset is located
-root_dir = r'C:\Users\user\Desktop\Mini Dataset'
+test_dir = r'C:\Users\user\Desktop\Mini Dataset'
+train_dir = r'C:\Users\user\Desktop\Mini Dataset'
 
-train_set = LaneDataSet(training_json, root_dir)
-test_set = LaneDataSet(testing_json, root_dir)
+train_set = LaneDataSet(training_json, test_dir)
+test_set = LaneDataSet(testing_json, train_dir)
 params = {'batch_size': 1,
         'shuffle': True}
 # Create the dataloaders from the defined datasets
@@ -73,7 +74,7 @@ test_gen_loader = DataLoader(test_set, **params)
 ########################################################################################
 # Prepare tensorboard
 from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('runs/elgan')
+writer = SummaryWriter(r'runs\elgan')
 
 
 

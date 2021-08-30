@@ -1,8 +1,8 @@
 from typing import Optional, Sequence, Union
 
 from torch.nn import Module, Conv2d, BatchNorm2d, Linear, init
-from torch.nn import functional as F
 from torch.nn.modules.activation import ReLU
+from torch.nn import functional as F
 
 from .transition_down import TransitionDown
 from .transition_up import TransitionUp
