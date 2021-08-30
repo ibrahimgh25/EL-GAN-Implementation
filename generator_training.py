@@ -23,6 +23,7 @@ def initialize(m, nonlinearity='relu'):
 
 # If there's a GPU we're going to use it
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
 
 # Define the generator and discriminator, then move them to 'device'
 generator = Generator().to(device)

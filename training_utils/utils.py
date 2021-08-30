@@ -30,3 +30,4 @@ def process_gen_output(gen_output):
     ''' Sets the class as the class with the highest probabilities'''
     gen_output[gen_output > 0.5] = 1
     gen_output[gen_output <= 0.5] = 0
+    return gen_output
