@@ -36,7 +36,9 @@ parts_to_initialize = [
               disc.classification_block
 ]
 for module in parts_to_initialize:
-  modeul = module.apply(initialize)
+  module = module.apply(initialize)
+  # Also, I will be using half precision for memory efficiency and faster training
+  module = module.half()
 # Now we create the trainer in an effort to make our code a little less messy
 adam_params = {'lr':5e-4, 'betas':(0.9, 0.99), 'weight_decay':3e-4}
 sgd_params = {'lr':1e-5, 'weight_decay':3e-4}
@@ -62,11 +64,12 @@ train_dir = r'C:\Users\user\Desktop\Mini Dataset'
 
 train_set = LaneDataSet(training_json, test_dir)
 test_set = LaneDataSet(testing_json, train_dir)
-params = {'batch_size': 1,
-        'shuffle': True}
+loader_params = {'batch_size': 1,
+                 'shuffle': True,
+                 'pin_memory':True}
 # Create the dataloaders from the defined datasets
-train_gen_loader = DataLoader(train_set, **params)
-test_gen_loader = DataLoader(test_set, **params)
+train_gen_loader = DataLoader(train_set, **loader_params)
+test_gen_loader = DataLoader(test_set, **loader_params)
 ################################# End Region ###########################################
 
 ########################################################################################
@@ -79,6 +82,8 @@ writer = SummaryWriter(r'runs\elgan')
 
 
 EPOCHS = 4
+# Just because I have a lot of operations, to be used on inputs from dataloader
+adjust = lambda x: x.to(device).float().half()
 
 for epoch in range(EPOCHS):
     # Define the running losses for the generator and the disc
@@ -88,7 +93,7 @@ for epoch in range(EPOCHS):
     for i, data in enumerate(train_gen_loader):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = inputs.to(device).float(), labels.to(device).float()
+        inputs, labels = adjust(inputs), adjust(labels)
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
@@ -156,5 +161,4 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
      
-
 writer.exit()

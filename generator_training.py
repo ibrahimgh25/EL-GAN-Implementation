@@ -50,11 +50,12 @@ train_dir = r'C:\Users\user\Desktop\Mini Dataset'
 
 train_set = LaneDataSet(training_json, train_dir)
 test_set = LaneDataSet(testing_json, test_dir)
-params = {'batch_size': 1,
-        'shuffle': True}
+loader_params = {'batch_size': 1,
+                 'shuffle': True,
+                 'pin_memory':True}
 # Create the dataloaders from the defined datasets
-train_gen_loader = DataLoader(train_set, **params)
-test_gen_loader = DataLoader(test_set, **params)
+train_gen_loader = DataLoader(train_set, **loader_params)
+test_gen_loader = DataLoader(test_set, **loader_params)
 ################################# End Region ###########################################
 
 ########################################################################################
@@ -76,7 +77,7 @@ for epoch in range(EPOCHS):
     for i, data in enumerate(train_gen_loader):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = inputs.to(device).float(), labels.to(device).float()
+        inputs, labels = inputs.to(device).float().half(), labels.to(device).float()
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
