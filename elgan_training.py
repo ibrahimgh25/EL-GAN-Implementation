@@ -93,11 +93,13 @@ for epoch in range(EPOCHS):
     for i, data in enumerate(train_gen_loader):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = adjust(inputs), adjust(labels)
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
             continue
+        # Now transform the input and label data to float16
+        inputs, labels = adjust(inputs), adjust(labels)
+        
         # Get the generator output
         gen_output = gen_trainer(inputs)
         # Update the generator if now's its turn
