@@ -30,7 +30,7 @@ class Generator(FCDenseNet):
                     down_dense_growth_rates = 18,
                     down_dense_bottleneck_ratios = None,
                     down_dense_num_layers = (1, 2, 3),
-                    down_transition_compression_factors = 0.8,
+                    down_transition_compression_factors = 0.5,
 
                     middle_dense_growth_rate = 18,
                     middle_dense_bottleneck = None,
@@ -52,7 +52,7 @@ class Discriminator(Sequential):
                   dense_blocks_growth_rates=8,
                   dense_blocks_bottleneck_ratios=4,
                   output_classes=2,
-                  transition_blocks_compression_factors=0.8,
+                  transition_blocks_compression_factors=0.5,
                   dropout=0):
         super().__init__()
         # region Parameters handling
