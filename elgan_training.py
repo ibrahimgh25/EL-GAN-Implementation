@@ -80,8 +80,9 @@ from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter(r'runs\elgan')
 
 
-
-EPOCHS = 4
+# Our constants:
+EPOCHS = 4 # Number of runs over the dataset
+NEEDED_SAMPLES_LOSS = 100 # Number of iterations before averaging and recording the loss
 # Just because I have a lot of operations, to be used on inputs from dataloader
 adjust = lambda x: x.to(device).float().half()
 
@@ -102,21 +103,21 @@ for epoch in range(EPOCHS):
         
         # Get the generator output
         gen_output = gen_trainer(inputs)
-        # Update the generator if now's its turn
+        # Update the generator if now's its turn, gen is updated in 300 itrs every 500 itrs
         gen_loss = gen_trainer.backwards(labels, gen_output, i % 500 < 300)
         # Detach the output from the generator
         gen_output = process_gen_output(gen_output.detach())
         # Run the the discriminator on the fake and real markings
         real_embedding = disc_trainer(inputs, labels)
         fake_embedding = disc_trainer(inputs, gen_output)
-        # Update the discriminator if now's its turn
+        # Update the discriminator if now's its turn, disc is updated in 200 itrs every 500 itrs
         disc_loss = disc_trainer.backwards(real_embedding, fake_embedding, i % 500 >= 300)
 
         # Update the running losses
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
-        # Save the data and reset running losses every 100 iterations
-        if not i % 100 and i != 0:
+        # Save the data and reset running losses every NEEDED_SAMPLES_LOSS iterations
+        if not i % NEEDED_SAMPLES_LOSS and i:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
@@ -153,8 +154,8 @@ for epoch in range(EPOCHS):
         # Update the running losses
         gen_running_loss += gen_loss.item()
         disc_running_loss += disc_loss.item()
-        # Save the data and reset running losses every 100 iterations
-        if not i % 100 and i != 0:
+        # Save the data and reset running losses every NEEDED_SAMPLES_LOSS iterations
+        if not i % NEEDED_SAMPLES_LOSS and i:
           gen_avg = gen_running_loss / 100
           disc_avg = disc_running_loss / 100
           print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
