@@ -1,18 +1,24 @@
 from torch import save, no_grad
 from torch.nn import Sequential
+from torch.optim import lr_scheduler
 
 class Trainer(Sequential):
     def __init__(self, model,
                  loss_criterion,
                  optimizer, optimizer_params,
-                 lr_scheduler=None, lr_scheduler_params={}):
+                 lr_scheduler=None, lr_scheduler_params={},
+                 lr_scheduling_period=200):
         super().__init__()
         self.model = model
         self.criterion = loss_criterion
         self.optimizer = optimizer(params=model.parameters(), **optimizer_params)
         if lr_scheduler:
             self.lr_scheduler = lr_scheduler(optimizer=self.optimizer, **lr_scheduler_params)
-
+        else:
+            self.lr_scheduler = None
+        self.iters = 0
+        self.lr_scheduling_period = lr_scheduling_period
+    
     def forward(self, *inputs_):
         return self.model.forward(*inputs_)
     
@@ -25,13 +31,17 @@ class Trainer(Sequential):
         loss = self.criterion(y, y_predicted, *args, **kwargs)
         return loss.detach()
     
-    def backwards(self, y, y_predicted, update_weights=True, *args, **kwargs):
+    def backwards(self, y, y_predicted, update_weights=True, update_lr=False, *args, **kwargs):
         loss = self.criterion(y, y_predicted, *args, **kwargs)
         if update_weights:
             loss.backward()
             self.optimizer.step()
-            if self.lr_scheduler:
-                self.lr_scheduler.step()
+            self.iters += 1
+        # If we need to update the learning rate, we do so
+        if self.iters == self.lr_scheduling_period:
+            lr_scheduler.step()
+            self.iters = 0
+        # We zero the gradient anyway to not carry the gradient to future iterations
         self.optimizer.zero_grad()
         return loss.detach()
     
