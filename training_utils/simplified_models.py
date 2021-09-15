@@ -29,16 +29,16 @@ class Generator(FCDenseNet):
 
                     down_dense_growth_rates = 18,
                     down_dense_bottleneck_ratios = None,
-                    down_dense_num_layers = (1, 2, 3),
+                    down_dense_num_layers = (1, 2, 3, 4),
                     down_transition_compression_factors = 0.5,
 
                     middle_dense_growth_rate = 18,
                     middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 4,
+                    middle_dense_num_layers = 6,
 
                     up_dense_growth_rates = 18,
                     up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (3, 2, 1))
+                    up_dense_num_layers = (4, 3, 2, 1))
 
     def forward(self, x):
         res = super().forward(x)
