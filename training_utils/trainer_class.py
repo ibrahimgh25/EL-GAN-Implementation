@@ -1,4 +1,4 @@
-from torch import save, no_grad
+from torch import save, no_grad, load
 from torch.nn import Sequential
 
 class Trainer(Sequential):
@@ -46,3 +46,6 @@ class Trainer(Sequential):
     
     def save_model_img(self, save_path):
         save(self.model, save_path)
+    
+    def load_model_img(self, filename):
+        self.model = load(filename)
