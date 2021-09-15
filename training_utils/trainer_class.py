@@ -1,6 +1,5 @@
 from torch import save, no_grad
 from torch.nn import Sequential
-from torch.optim import lr_scheduler
 
 class Trainer(Sequential):
     def __init__(self, model,
@@ -39,7 +38,7 @@ class Trainer(Sequential):
             self.iters += 1
         # If we need to update the learning rate, we do so
         if self.iters == self.lr_scheduling_period:
-            lr_scheduler.step()
+            self.lr_scheduler.step()
             self.iters = 0
         # We zero the gradient anyway to not carry the gradient to future iterations
         self.optimizer.zero_grad()
