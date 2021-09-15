@@ -118,8 +118,8 @@ for epoch in range(EPOCHS):
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every NEEDED_SAMPLES_LOSS iterations
         if not i % NEEDED_SAMPLES_LOSS and i:
-          gen_avg = gen_running_loss / 100
-          disc_avg = disc_running_loss / 100
+          gen_avg = gen_running_loss / NEEDED_SAMPLES_LOSS
+          disc_avg = disc_running_loss / NEEDED_SAMPLES_LOSS
           print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
           current_iter = epoch * len(train_gen_loader) + i
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
@@ -156,8 +156,8 @@ for epoch in range(EPOCHS):
         disc_running_loss += disc_loss.item()
         # Save the data and reset running losses every NEEDED_SAMPLES_LOSS iterations
         if not i % NEEDED_SAMPLES_LOSS and i:
-          gen_avg = gen_running_loss / 100
-          disc_avg = disc_running_loss / 100
+          gen_avg = gen_running_loss / NEEDED_SAMPLES_LOSS
+          disc_avg = disc_running_loss / NEEDED_SAMPLES_LOSS
           print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}, disc_loss: {disc_avg}")
           current_iter = epoch * len(train_gen_loader) + i
           writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
