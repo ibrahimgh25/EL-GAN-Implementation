@@ -134,7 +134,7 @@ for epoch in range(EPOCHS):
     for i, data in enumerate(test_gen_loader):
       # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
-        inputs, labels = inputs.to(device).float(), labels.to(device).float()
+        inputs, labels = adjust(inputs), adjust(labels)
         # Loading a datasample might fail at some point,
         # if that happens, I just skip the sample
         if torch.all(torch.eq(labels, torch.tensor(1))):
