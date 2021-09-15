@@ -14,8 +14,7 @@ def embedding_loss(fake_embedding, real_embedding):
     # The only way I could get this to work was this wierd way, I scoured the internet and found no 
     # solutions, but after expermentations I was able to solve the many errors I encountered
     # This may slow down training, I wil look into something else later
-    cdist = lambda fake_embedding, real_embedding: -torch.sum(torch.cdist(fake_embedding, real_embedding))
-    dist = torch.tensor([cdist(x, y) for x, y in zip(real_embedding, fake_embedding)])
+    dist = torch.tensor([-torch.sum(torch.sub(x, y)**2) for x, y in zip(real_embedding, fake_embedding)])
     dist.requires_grad = True
     return dist.sum()
 
