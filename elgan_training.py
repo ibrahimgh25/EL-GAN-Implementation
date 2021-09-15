@@ -84,7 +84,7 @@ writer = SummaryWriter(r'runs\elgan')
 EPOCHS = 4 # Number of runs over the dataset
 NEEDED_SAMPLES_LOSS = 100 # Number of iterations before averaging and recording the loss
 # Just because I have a lot of operations, to be used on inputs from dataloader
-adjust = lambda x: x.to(device).float().half()
+adjust = lambda x: x.to(device).float()
 
 for epoch in range(EPOCHS):
     # Define the running losses for the generator and the disc
@@ -127,8 +127,8 @@ for epoch in range(EPOCHS):
           gen_running_loss, disc_running_loss = 0, 0
     
     # Save the models after each epoch
-    gen_trainer.save(f'models/generator/generator_epoch_{epoch}.ptmdl')
-    disc_trainer.save(f'models/discriminator/discriminator_epoch_{epoch}.ptmdl')
+    gen_trainer.save_model_img(f'models/generator/generator_epoch_{epoch}.ptmdl')
+    disc_trainer.save_model_img(f'models/discriminator/discriminator_epoch_{epoch}.ptmdl')
     # Testing the networks
     gen_running_loss, disc_running_loss = 0.0, 0.0
     for i, data in enumerate(test_gen_loader):
@@ -164,4 +164,4 @@ for epoch in range(EPOCHS):
           writer.add_scalar('Discriminator Training Loss', disc_avg, current_iter)
           gen_running_loss, disc_running_loss = 0, 0
      
-writer.exit()
+writer.close()
