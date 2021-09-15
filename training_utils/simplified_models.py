@@ -67,8 +67,7 @@ class Discriminator(Sequential):
         self.full_img_head, num_channels_2 = self._separtate_part(3, initial_num_features, *dense_block_args)
         current_channels = num_channels_1 + num_channels_2
         self.common_part, current_channels = self._common_part(current_channels, *dense_block_args, 2)
-        self.classification_block = ClassificationBlock(current_channels, output_classes, 9828)
-    
+        
     def _separtate_part(self, input_channels,
                         initial_num_features, 
                         dropout, 
@@ -172,6 +171,4 @@ class Discriminator(Sequential):
         # Concatenate the two outputs into one tensor
         x_cat = cat((label_part, img_part), 1)
         embedding = self.common_part(x_cat)
-        y = self.classification_block(embedding)
-        # Embedding is to be used to calculate the embedding loss
-        return softmax(y, dim=1), embedding
+        return embedding
