@@ -1,5 +1,5 @@
 from .utils import (
-    gen_loss,
+    gen_criterion,
     embedding_loss,
     process_gen_output
 )

@@ -43,7 +43,7 @@ for module in parts_to_initialize:
 adam_params = {'lr':5e-4, 'betas':(0.9, 0.99), 'weight_decay':3e-4}
 sgd_params = {'lr':1e-5, 'weight_decay':3e-4}
 scheduler_params = {'gamma':0.99}
-gen_trainer = Trainer(generator, gen_loss, 
+gen_trainer = Trainer(generator, gen_criterion, 
                       Adam, adam_params,
                       ExponentialLR, scheduler_params)
 
