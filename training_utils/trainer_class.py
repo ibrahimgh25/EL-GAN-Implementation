@@ -1,4 +1,6 @@
-from torch import save, no_grad, load
+import _pickle as cpickle
+
+from torch import no_grad
 from torch.nn import Sequential
 
 class Trainer(Sequential):
@@ -45,7 +47,9 @@ class Trainer(Sequential):
         return loss.detach()
     
     def save_model_img(self, save_path):
-        save(self.model, save_path)
+        with open(save_path, 'wb') as file_out:
+            cpickle.dump(self, file_out)
     
     def load_model_img(self, filename):
-        self.model = load(filename)
+        with open(filename, 'rb') as file_in:
+            cpickle.load(file_in)
