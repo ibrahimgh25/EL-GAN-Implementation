@@ -23,7 +23,7 @@ from dense.shared import DenseBlock
 class Generator(FCDenseNet):
     def __init__(self):
         super().__init__( in_channels = 3,
-                     out_channels = 2,
+                     out_channels = 1,
                      initial_num_features = 75,
                      dropout = 0.1,
 
