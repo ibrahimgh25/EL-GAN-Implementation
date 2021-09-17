@@ -53,3 +53,8 @@ class Trainer(Sequential):
     def load_model_img(self, filename):
         with open(filename, 'rb') as file_in:
             cpickle.load(file_in)
+    
+    def load_model_only(self, filename):
+        with open(filename, 'rb') as file_in:
+            trainer = cpickle.load(file_in)
+        self.model = trainer.model
