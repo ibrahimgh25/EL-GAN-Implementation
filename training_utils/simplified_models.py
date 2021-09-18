@@ -4,7 +4,7 @@ This is to create simpler models I can experiment with on my local environment, 
 I basically copied the code from ..dense.el_gan.discriminator and ..dense.el_gan.genearator and reduced
  the number of dense blocks
 """
-from torch.nn.functional import softmax
+from torch import sigmoid
 from itertools import zip_longest
 
 from torch import cat
@@ -41,7 +41,7 @@ class Generator(FCDenseNet):
 
     def forward(self, x):
         res = super().forward(x)
-        return softmax(res, dim=1)
+        return sigmoid(res)
 
 
 class Discriminator(Sequential):

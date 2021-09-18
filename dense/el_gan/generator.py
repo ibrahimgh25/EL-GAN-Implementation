@@ -1,4 +1,4 @@
-from torch.nn.functional import softmax
+from torch import sigmoid
 from torch.nn.modules.activation import LeakyReLU
 from ..fc_densenet import FCDenseNet
 
@@ -26,4 +26,4 @@ class Generator(FCDenseNet):
 
     def forward(self, x):
         res = super().forward(x)
-        return softmax(res, dim=1)
+        return sigmoid(res, dim=1)
