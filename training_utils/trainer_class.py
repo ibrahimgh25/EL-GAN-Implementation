@@ -1,3 +1,4 @@
+import os
 import _pickle as cpickle
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,6 +52,11 @@ class Trainer(Sequential):
         return loss.detach()
     
     def save_model_img(self, save_path):
+        save_path = save_path.replace('\\', '/')
+        files = save_path.split('/')
+        dir = '/'.join(files[:-1])
+        if os.path.exists(dir):
+            os.makedirs(dir)
         with open(save_path, 'wb') as file_out:
             cpickle.dump(self, file_out)
     
