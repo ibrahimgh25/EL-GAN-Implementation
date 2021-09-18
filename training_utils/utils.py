@@ -1,6 +1,6 @@
 import torch
 
-def gen_criterion(y, y_predict, adverserial_loss=0, alpha=1.0):
+def gen_criterion(y, y_predict, adverserial_loss=0, alpha=0.2):
     ''' An implementation for pixel-wise cross entropy'''
     y_predict = torch.add(y_predict, torch.tensor(1e-6))
     w = torch.tensor(y.shape[-2])
