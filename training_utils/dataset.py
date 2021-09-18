@@ -50,8 +50,8 @@ class LaneDataSet(Dataset):
                 img = self.transform(img)
                 label_img = self.transform(label_img)
 
-            inv_label = abs(255 - label_img)
-            label_img = np.dstack((label_img, inv_label)) / 255
+            # inv_label = abs(255 - label_img)
+            # label_img = np.dstack((label_img, inv_label)) / 255
             # reshape for pytorch
             # tensorflow: [height, width, channels]
             # pytorch: [channels, height, width]
