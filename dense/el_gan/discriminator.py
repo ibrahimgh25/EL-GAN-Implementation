@@ -10,26 +10,22 @@ from ..shared import DenseBlock
 
 class Discriminator(Sequential):
     def __init__( self,
-                  in_channels=2,
                   initial_num_features=24,
                   dense_blocks_growth_rates=8,
                   dense_blocks_bottleneck_ratios=4,
                   output_classes=2,
-                  transition_blocks_compression_factors=0.8,
+                  transition_blocks_compression_factors=0.5,
                   dropout=0):
         super().__init__()
         # region Parameters handling
-        self.in_channels = in_channels
-        self.output_classes = output_classes
-
         dense_block_args = (dropout,
                             dense_blocks_bottleneck_ratios, 
                             transition_blocks_compression_factors,
                             dense_blocks_growth_rates)
-        self.markings_head, num_channels_1 = self._separtate_part(2, initial_num_features, *dense_block_args)
+        self.markings_head, num_channels_1 = self._separtate_part(1, initial_num_features, *dense_block_args)
         self.full_img_head, num_channels_2 = self._separtate_part(3, initial_num_features, *dense_block_args)
         current_channels = num_channels_1 + num_channels_2
-        self.common_part, current_channels = self._common_part(current_channels, *dense_block_args, 2)
+        self.common_part, current_channels = self._common_part(current_channels, *dense_block_args)
         self.classification_block = ClassificationBlock(current_channels, output_classes, 936)
     
     def _separtate_part(self, input_channels,
@@ -61,8 +57,7 @@ class Discriminator(Sequential):
                         dropout,
                         dense_blocks_bottleneck_ratios,
                         transition_blocks_compression_factors,
-                        dense_blocks_growth_rates,
-                        output_classes):
+                        dense_blocks_growth_rates):
         
 
         model = Sequential()

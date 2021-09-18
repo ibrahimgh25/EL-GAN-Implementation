@@ -5,14 +5,14 @@ from ..fc_densenet import FCDenseNet
 class Generator(FCDenseNet):
     def __init__(self):
         super().__init__( in_channels = 3,
-                     out_channels = 2,
+                     out_channels = 1,
                      initial_num_features = 75,
                      dropout = 0.1,
 
                     down_dense_growth_rates = 18,
                     down_dense_bottleneck_ratios = None,
                     down_dense_num_layers = (1, 2, 3, 4, 5, 6, 8),
-                    down_transition_compression_factors = 0.8,
+                    down_transition_compression_factors = 0.5,
 
                     middle_dense_growth_rate = 18,
                     middle_dense_bottleneck = None,
