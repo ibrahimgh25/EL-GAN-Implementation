@@ -171,3 +171,12 @@ class Discriminator(Sequential):
         x_cat = cat((label_part, img_part), 1)
         embedding = self.common_part(x_cat)
         return embedding
+    
+    def apply(self, function):
+        modules = [
+                    self.markings_head,
+                    self.full_img_head, 
+                    self.common_part
+                    ]
+        for module in modules:
+            module.apply(function)

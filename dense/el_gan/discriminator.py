@@ -133,3 +133,13 @@ class Discriminator(Sequential):
         y = self.classification_block(embedding)
         # Embedding is to be used to calculate the embedding loss
         return softmax(y, dim=1), embedding
+    
+    def apply(self, function):
+        modules = [
+                    self.markings_head,
+                    self.full_img_head, 
+                    self.common_part,
+                    self.classification_block
+                    ]
+        for module in modules:
+            module.apply(function)
