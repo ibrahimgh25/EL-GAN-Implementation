@@ -51,16 +51,16 @@ class Trainer(Sequential):
         self.optimizer.zero_grad()
         return loss.detach()
     
-    def save_model_img(self, save_path):
+    def save_trainer(self, save_path):
         save_path = save_path.replace('\\', '/')
         files = save_path.split('/')
         dir = '/'.join(files[:-1])
-        if os.path.exists(dir):
+        if not os.path.exists(dir):
             os.makedirs(dir)
         with open(save_path, 'wb') as file_out:
             cpickle.dump(self, file_out)
     
-    def load_model_img(self, filename):
+    def load_trainer(self, filename):
         with open(filename, 'rb') as file_in:
             cpickle.load(file_in)
     
