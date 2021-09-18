@@ -5,10 +5,7 @@ def gen_criterion(y, y_predict, adverserial_loss=0, alpha=0.2):
     y_predict = torch.add(y_predict, torch.tensor(1e-15))
     w = torch.tensor(y.shape[-2])
     h = torch.tensor(y.shape[-1])
-    y_inverse = torch.ones_like(y) - y
-    y_pred_inverse = torch.ones_like(y_predict) - y_predict
-    y_pred_inverse[y_pred_inverse <= 0] = 1e-15
-    loss = -torch.sum(torch.xlogy(y, y_predict) + torch.xlogy(y_inverse, y_pred_inverse))
+    loss = -torch.sum(torch.xlogy(y, y_predict))
     loss = torch.divide(loss, torch.multiply(w, h))
     return loss - alpha * adverserial_loss
 
