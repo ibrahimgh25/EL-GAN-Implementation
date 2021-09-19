@@ -26,6 +26,7 @@ class Trainer(Sequential):
         self.testing_losses = []
         
     def forward(self, *inputs_):
+        self.optimizer.zero_grad()
         return self.model.forward(*inputs_)
     
     def test(self, *inputs_):
@@ -37,18 +38,18 @@ class Trainer(Sequential):
         loss = self.criterion(y, y_predicted, *args, **kwargs)
         return loss.detach()
     
-    def backwards(self, y, y_predicted, update_weights=True, update_lr=False, *args, **kwargs):
-        loss = self.criterion(y, y_predicted, *args, **kwargs)
+    def backwards(self, y, y_predicted, update_weights=True, *args, **kwargs):
         if update_weights:
+            loss = self.criterion(y, y_predicted, *args, **kwargs)
             loss.backward()
             self.optimizer.step()
             self.iters += 1
-        # If we need to update the learning rate, we do so
-        if self.iters == self.lr_scheduling_period:
-            self.lr_scheduler.step()
-            self.iters = 0
-        # We zero the gradient anyway to not carry the gradient to future iterations
-        self.optimizer.zero_grad()
+            # If we need to update the learning rate, we do so
+            if self.iters == self.lr_scheduling_period:
+                self.lr_scheduler.step()
+                self.iters = 0
+        else:
+            loss = self.criterion(y, y_predicted, *args, **kwargs)
         return loss.detach()
     
     def save_trainer(self, save_path):
