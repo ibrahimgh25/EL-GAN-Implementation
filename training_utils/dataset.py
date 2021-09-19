@@ -42,7 +42,7 @@ class LaneDataSet(Dataset):
                 prv_pt = None
                 for pt in lane:
                     if prv_pt:
-                        cv2.line(label_img, prv_pt, pt, color=255, thickness=2)
+                        cv2.line(label_img, prv_pt, pt, color=1, thickness=2)
                     prv_pt = pt
 
             # optional transformations
