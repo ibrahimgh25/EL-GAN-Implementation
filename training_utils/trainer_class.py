@@ -62,7 +62,7 @@ class Trainer(Sequential):
     
     def load_trainer(self, filename):
         with open(filename, 'rb') as file_in:
-            cpickle.load(file_in)
+            self = cpickle.load(file_in)
     
     def load_model_only(self, filename):
         with open(filename, 'rb') as file_in:
