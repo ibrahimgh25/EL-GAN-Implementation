@@ -43,7 +43,6 @@ class Trainer(Sequential):
             loss = self.criterion(y, y_predicted, *args, **kwargs)
             loss.backward()
             self.optimizer.step()
-            print("Halalooya!")
             self.iters += 1
             # If we need to update the learning rate, we do so
             if self.iters == self.lr_scheduling_period and self.lr_scheduler:
