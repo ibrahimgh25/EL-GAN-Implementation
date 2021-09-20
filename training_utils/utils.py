@@ -23,7 +23,7 @@ def embedding_loss(fake_embedding, real_embedding):
 
 def disguise_label(label, low_end=0, high_end=0.1, device='cuda:0'):
     ''' Can be used to subtract and add random values to a label so it isn't easily spotted by a discriminator'''
-    noise = torch.FloatTensor(*label.size(), device=device).uniform_(low_end, high_end).to(device)
+    noise = torch.FloatTensor(*label.size()).uniform_(low_end, high_end).to(device)
     mask = torch.clone(label)
     mask[mask==0] = -1
     return torch.subtract(label, torch.multiply(noise, mask))
