@@ -26,6 +26,13 @@ class LaneDataSet(Dataset):
             self._gt_y_list.append(element['h_samples'])
         assert len(self._gt_img_list) == len(self._gt_y_list) == len(self._gt_lanes_list)
 
+    def trim_sample(self, needed_samples):
+        if needed_samples > len(self._gt_img_list):
+            return
+        self._gt_img_list = self._gt_img_list[:needed_samples]
+        self._gt_lanes_list = self._gt_lanes_list[:needed_samples]
+        self._gt_y_list = self._gt_lanes_list[:needed_samples]
+    
     def __len__(self):
         return len(self._gt_img_list)
 
@@ -51,7 +58,7 @@ class LaneDataSet(Dataset):
                 label_img = self.transform(label_img)
 
             # inv_label = abs(255 - label_img)
-            # label_img = np.dstack((label_img, inv_label)) / 255
+            # label_img = np.dstack((label_img, inv_label))
             # reshape for pytorch
             # tensorflow: [height, width, channels]
             # pytorch: [channels, height, width]
