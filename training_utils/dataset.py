@@ -31,7 +31,7 @@ class LaneDataSet(Dataset):
             return
         self._gt_img_list = self._gt_img_list[:needed_samples]
         self._gt_lanes_list = self._gt_lanes_list[:needed_samples]
-        self._gt_y_list = self._gt_lanes_list[:needed_samples]
+        self._gt_y_list = self._gt_y_list[:needed_samples]
     
     def __len__(self):
         return len(self._gt_img_list)
