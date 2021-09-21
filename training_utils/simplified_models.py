@@ -11,6 +11,8 @@ from torch import cat
 from torch.nn import Sequential
 from torch.nn import ELU
 import sys
+
+from torch.nn.modules.activation import LeakyReLU
 sys.path.append('..')
 from dense import FCDenseNet
 from dense.densenet import (
@@ -38,7 +40,8 @@ class Generator(FCDenseNet):
 
                     up_dense_growth_rates = 12,
                     up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (6, 4, 2, 1))
+                    up_dense_num_layers = (6, 4, 2, 1),
+                    activation=LeakyReLU)
 
     def forward(self, x):
         res = super().forward(x)
