@@ -25,18 +25,18 @@ class Generator(FCDenseNet):
                      in_channels = 3,
                      out_channels = 1,
                      initial_num_features = 64,
-                     dropout = 0.1,
+                     dropout = 0.0,
 
-                    down_dense_growth_rates = 14,
+                    down_dense_growth_rates = 12,
                     down_dense_bottleneck_ratios = None,
                     down_dense_num_layers = (1, 2, 3, 4, 6),
                     down_transition_compression_factors = 0.5,
 
                     middle_dense_growth_rate = 14,
                     middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 8,
+                    middle_dense_num_layers = 6,
 
-                    up_dense_growth_rates = 14,
+                    up_dense_growth_rates = 12,
                     up_dense_bottleneck_ratios = None,
                     up_dense_num_layers = (6, 4, 3, 2, 1))
 
