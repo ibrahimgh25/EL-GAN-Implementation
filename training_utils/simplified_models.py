@@ -26,7 +26,7 @@ class Generator(FCDenseNet):
         super().__init__( 
                      in_channels = 3,
                      out_channels = 1,
-                     initial_num_features = 64,
+                     initial_num_features = 25,
                      dropout = 0.1,
 
                     down_dense_growth_rates = 12,
@@ -51,7 +51,7 @@ class Generator(FCDenseNet):
 class Discriminator(Sequential):
     def __init__( self,
                   in_channels=1,
-                  initial_num_features=48,
+                  initial_num_features=25,
                   dense_blocks_growth_rates=8,
                   dense_blocks_bottleneck_ratios=4,
                   output_classes=2,
