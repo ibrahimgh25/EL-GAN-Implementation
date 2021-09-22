@@ -36,12 +36,12 @@ class Generator(FCDenseNet):
 
                     middle_dense_growth_rate = 14,
                     middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 8,
+                    middle_dense_num_layers = 6,
 
                     up_dense_growth_rates = 14,
                     up_dense_bottleneck_ratios = None,
                     up_dense_num_layers = (6, 4, 2, 1),
-                    activation=LeakyReLU)
+                    )
 
     def forward(self, x):
         res = super().forward(x)
@@ -51,7 +51,7 @@ class Generator(FCDenseNet):
 class Discriminator(Sequential):
     def __init__( self,
                   in_channels=1,
-                  initial_num_features=25,
+                  initial_num_features=48,
                   dense_blocks_growth_rates=8,
                   dense_blocks_bottleneck_ratios=4,
                   output_classes=2,
@@ -104,7 +104,7 @@ class Discriminator(Sequential):
         
 
         model = Sequential()
-        num_layers = [3, 4]#, 6]
+        num_layers = [3, 4, 6]
         # Add the dense blocks
         name  = 'common'
         model, current_channels = self.add_demse_blocks(model, name, 
