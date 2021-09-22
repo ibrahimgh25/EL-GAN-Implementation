@@ -36,7 +36,7 @@ class Generator(FCDenseNet):
 
                     middle_dense_growth_rate = 14,
                     middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 6,
+                    middle_dense_num_layers = 8,
 
                     up_dense_growth_rates = 14,
                     up_dense_bottleneck_ratios = None,
