@@ -26,7 +26,7 @@ class Generator(FCDenseNet):
         super().__init__( 
                      in_channels = 3,
                      out_channels = 1,
-                     initial_num_features = 25,
+                     initial_num_features = 48,
                      dropout = 0.1,
 
                     down_dense_growth_rates = 14,
