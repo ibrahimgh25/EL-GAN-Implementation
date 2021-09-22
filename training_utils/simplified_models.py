@@ -26,8 +26,8 @@ class Generator(FCDenseNet):
         super().__init__( 
                      in_channels = 3,
                      out_channels = 1,
-                     initial_num_features = 48,
-                     dropout = 0.1,
+                     initial_num_features = 64,
+                     dropout = 0.0,
 
                     down_dense_growth_rates = 14,
                     down_dense_bottleneck_ratios = None,
@@ -104,7 +104,7 @@ class Discriminator(Sequential):
         
 
         model = Sequential()
-        num_layers = [3, 4, 6]
+        num_layers = [3, 4]#, 6]
         # Add the dense blocks
         name  = 'common'
         model, current_channels = self.add_demse_blocks(model, name, 
