@@ -41,7 +41,7 @@ class Generator(FCDenseNet):
                     up_dense_growth_rates = 12,
                     up_dense_bottleneck_ratios = None,
                     up_dense_num_layers = (6, 4, 2, 1),
-                    activation=LeakyReLU)
+                    activation=ELU)
 
     def forward(self, x):
         res = super().forward(x)
