@@ -26,12 +26,12 @@ class Generator(FCDenseNet):
         super().__init__( 
                      in_channels = 3,
                      out_channels = 1,
-                     initial_num_features = 64,
+                     initial_num_features = 25,
                      dropout = 0.1,
 
                     down_dense_growth_rates = 16,
                     down_dense_bottleneck_ratios = None,
-                    down_dense_num_layers = (1, 2, 4, 6),
+                    down_dense_num_layers = (1, 2, 4, 6, 8),
                     down_transition_compression_factors = 0.5,
 
                     middle_dense_growth_rate = 16,
@@ -40,7 +40,7 @@ class Generator(FCDenseNet):
 
                     up_dense_growth_rates = 16,
                     up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (6, 4, 2, 1),
+                    up_dense_num_layers = (8, 6, 4, 2, 1),
                     )
 
     def forward(self, x):
@@ -51,9 +51,9 @@ class Generator(FCDenseNet):
 class Discriminator(Sequential):
     def __init__( self,
                   in_channels=1,
-                  initial_num_features=64,
+                  initial_num_features=25,
                   dense_blocks_growth_rates=8,
-                  dense_blocks_bottleneck_ratios=4,
+                  dense_blocks_bottleneck_ratios=None,
                   output_classes=2,
                   transition_blocks_compression_factors=0.5,
                   dropout=0):
