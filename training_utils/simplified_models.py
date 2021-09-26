@@ -53,7 +53,7 @@ class Discriminator(Sequential):
                   in_channels=1,
                   initial_num_features=25,
                   dense_blocks_growth_rates=8,
-                  dense_blocks_bottleneck_ratios=None,
+                  dense_blocks_bottleneck_ratios=[None],
                   output_classes=2,
                   transition_blocks_compression_factors=0.5,
                   dropout=0):
