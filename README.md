@@ -19,6 +19,7 @@ The discriminator in EL-GAN (as mentioned before) has two heads, they take in th
   <img src="resources/discriminator_architecture.png" width="350" alt="The two-headed densenet used for the discriminator from EL-GAN">
 </p>
 The two head converge after 2 dense blocks, where there output is concatenated and continues through 5 more dense blocks. The embedding is the output of the last dense block (the 1x1 conv and the classification layer are there more for symmetry than anything else, they aren't necessary in the network.
+
 ## For later
 The repository still needs some work, so I may return to it later.
 - The training code needs to be updated to what I used for training (I trained on a colab notebook).
