@@ -8,7 +8,7 @@ The model introduced relied heavily on the Denseblocks which were used in  both 
 <b>Note:</b> Labels in the above paragraph and later on refers to the 2-channel image containing the lane markings.
 
 ## Generator
-The generator in the model was a FC-DenseNet (fully connected dense network), which was introdued in [this](https://openaccess.thecvf.com/content_cvpr_2017_workshops/w13/papers/Jegou_The_One_Hundred_CVPR_2017_paper.pdf) paper. The architecture of the generator could be seen in the image below.
+The generator in the model was a FC-DenseNet (fully connected dense network), which was introduced in [this](https://openaccess.thecvf.com/content_cvpr_2017_workshops/w13/papers/Jegou_The_One_Hundred_CVPR_2017_paper.pdf) paper. The architecture of the generator could be seen in the image below.
 <p align="center" bg-color="#fff">
   <img src="resources/generator_architecture.png" width="350" alt="The fully-connected densenet used for the generator from EL-GAN">
 </p>
