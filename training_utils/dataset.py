@@ -27,8 +27,9 @@ class LaneDataSet(Dataset):
         assert len(self._gt_img_list) == len(self._gt_y_list) == len(self._gt_lanes_list)
 
     def trim_sample(self, needed_samples):
+        ''' Trim the size of the dataset to have a specific number of samples'''
         if needed_samples > len(self._gt_img_list):
-            return
+            return # If the needed samples are moret than the available, do nothing
         self._gt_img_list = self._gt_img_list[:needed_samples]
         self._gt_lanes_list = self._gt_lanes_list[:needed_samples]
         self._gt_y_list = self._gt_y_list[:needed_samples]
@@ -42,31 +43,23 @@ class LaneDataSet(Dataset):
             gt_lanes = self._gt_lanes_list[idx]
             y_samples = self._gt_y_list[idx]
 
-            img = img/255
+
             gt_lanes_vis = [[(x, y) for (x, y) in zip(lane, y_samples) if x >= 0] for lane in gt_lanes]
             label_img = np.zeros(list(img.shape[:2]) + [1], dtype=np.float32)
+            # We use the series of points to draw the lines that define the lane markings
             for lane in gt_lanes_vis:
                 prv_pt = None
                 for pt in lane:
                     if prv_pt:
                         cv2.line(label_img, prv_pt, pt, color=1, thickness=2)
                     prv_pt = pt
-
-            # optional transformations
-            if self.transform:
-                img = self.transform(img)
-                label_img = self.transform(label_img)
-
-            # inv_label = abs(255 - label_img)
-            # label_img = np.dstack((label_img, inv_label))
-            # reshape for pytorch
-            # tensorflow: [height, width, channels]
-            # pytorch: [channels, height, width]
-            img = img.reshape(img.shape[2], img.shape[0], img.shape[1])
-            label_img = np.reshape(label_img, (label_img.shape[2], label_img.shape[0], label_img.shape[1]))
-            if self.transform:
-                img = self.tranform(img)
-                label_img = self.transform(img)
+            # Use 
+            if self.transform is not None:
+                augmentations = self.transform(image=img, mask=label_img)
+                img = augmentations["image"]
+                label_img = augmentations["mask"]
             return img, label_img
         except:
+            # If an error occurs with retrieving the data, return one tensors
+            # This error should be handled for in the trainging phase
             return tensor(1), tensor(1)
