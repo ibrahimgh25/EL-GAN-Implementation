@@ -1,6 +1,7 @@
 # EL-GAN
 This repository offers an implementation for the Embedded loss GAN. The network was introduced in the paper [EL-GAN: Embedding Loss Driven Generative
 Adversarial Networks for Lane Detection](https://arxiv.org/pdf/1806.05525) by Mohsen Ghafoorian, Cedric Nugteren, Nora Baka, Olaf Booij, Michael Hofmann.
+This was part of my FYP for applying to the Computer and Communications Engineering degree at the Lebanese University, Faculty of Engineering.
 ## How to use
 After downloading the code from this repository you can download the third party dependencies from requirements.txt. Then you have the model implmentation as well as a training code that you can edit to fit your needs. The dataset class could also be easily adapted for other tasks.
 ## Introduction
