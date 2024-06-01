@@ -1,3 +1,8 @@
+# This file contains code adapted from pytorch-densenet-tiramisu by Federico Baldassarre
+# Original Source: https://github.com/baldassarreFe/pytorch-densenet-tiramisu
+# License: MIT License (https://opensource.org/licenses/MIT)
+
+
 from .densenet import DenseNet
 
 
@@ -11,7 +16,7 @@ class DenseNet121(DenseNet):
             dense_blocks_growth_rates=32,
             dense_blocks_bottleneck_ratios=4,
             dense_blocks_num_layers=(6, 12, 24, 16),
-            transition_blocks_compression_factors=0.5
+            transition_blocks_compression_factors=0.5,
         )
 
 
@@ -25,7 +30,7 @@ class DenseNet169(DenseNet):
             dense_blocks_growth_rates=32,
             dense_blocks_bottleneck_ratios=4,
             dense_blocks_num_layers=(6, 12, 32, 32),
-            transition_blocks_compression_factors=0.5
+            transition_blocks_compression_factors=0.5,
         )
 
 
@@ -39,7 +44,7 @@ class DenseNet201(DenseNet):
             dense_blocks_growth_rates=32,
             dense_blocks_bottleneck_ratios=4,
             dense_blocks_num_layers=(6, 12, 48, 32),
-            transition_blocks_compression_factors=0.5
+            transition_blocks_compression_factors=0.5,
         )
 
 
@@ -53,6 +58,5 @@ class DenseNet161(DenseNet):
             dense_blocks_growth_rates=48,
             dense_blocks_bottleneck_ratios=4,
             dense_blocks_num_layers=(6, 12, 36, 24),
-            transition_blocks_compression_factors=0.5
+            transition_blocks_compression_factors=0.5,
         )
-

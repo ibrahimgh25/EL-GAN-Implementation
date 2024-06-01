@@ -1,3 +1,8 @@
+# This file contains code adapted from pytorch-densenet-tiramisu by Federico Baldassarre
+# Original Source: https://github.com/baldassarreFe/pytorch-densenet-tiramisu
+# License: MIT License (https://opensource.org/licenses/MIT)
+
+
 from typing import Optional
 
 from torch.nn import Sequential, BatchNorm2d, ReLU, Conv2d, Dropout2d
@@ -20,24 +25,35 @@ class DenseLayer(RichRepr, Sequential):
     - (Dropout)
     """
 
-    def __init__(self, in_channels: int, out_channels: int, nonlinearity=ReLU,
-                 bottleneck_ratio: Optional[int] = None, dropout: float = 0.0):
+    def __init__(
+        self,
+        in_channels: int,
+        out_channels: int,
+        nonlinearity=ReLU,
+        bottleneck_ratio: Optional[int] = None,
+        dropout: float = 0.0,
+    ):
         super(DenseLayer, self).__init__()
 
         self.in_channels = in_channels
         self.out_channels = out_channels
 
-        self.add_module('norm', BatchNorm2d(num_features=in_channels))
-        self.add_module('nonlinearity', nonlinearity(inplace=True))
+        self.add_module("norm", BatchNorm2d(num_features=in_channels))
+        self.add_module("nonlinearity", nonlinearity(inplace=True))
 
         if bottleneck_ratio is not None:
-            self.add_module('bottleneck', Bottleneck(in_channels, bottleneck_ratio * out_channels))
+            self.add_module(
+                "bottleneck", Bottleneck(in_channels, bottleneck_ratio * out_channels)
+            )
             in_channels = bottleneck_ratio * out_channels
 
-        self.add_module('conv', Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False))
+        self.add_module(
+            "conv",
+            Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False),
+        )
 
         if dropout > 0:
-            self.add_module('drop', Dropout2d(dropout, inplace=True))
+            self.add_module("drop", Dropout2d(dropout, inplace=True))
 
     def __repr__(self):
         return super(DenseLayer, self).__repr__(self.in_channels, self.out_channels)

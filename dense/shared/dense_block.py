@@ -1,3 +1,8 @@
+# This file contains code adapted from pytorch-densenet-tiramisu by Federico Baldassarre
+# Original Source: https://github.com/baldassarreFe/pytorch-densenet-tiramisu
+# License: MIT License (https://opensource.org/licenses/MIT)
+
+
 from typing import Optional
 
 import torch
@@ -20,8 +25,14 @@ class DenseBlock(RichRepr, Module):
       so it will have a channel depth of (growth_rate * num_layers) or (growth_rate * num_layers + in_channels)
     """
 
-    def __init__(self, in_channels: int, growth_rate: int, num_layers: int,
-                 concat_input: bool = False, dense_layer_params: Optional[dict] = None):
+    def __init__(
+        self,
+        in_channels: int,
+        growth_rate: int,
+        num_layers: int,
+        concat_input: bool = False,
+        dense_layer_params: Optional[dict] = None,
+    ):
         super(DenseBlock, self).__init__()
 
         self.concat_input = concat_input
@@ -37,8 +48,12 @@ class DenseBlock(RichRepr, Module):
 
         for i in range(num_layers):
             self.add_module(
-                f'layer_{i}',
-                DenseLayer(in_channels=in_channels + i * growth_rate, out_channels=growth_rate, **dense_layer_params)
+                f"layer_{i}",
+                DenseLayer(
+                    in_channels=in_channels + i * growth_rate,
+                    out_channels=growth_rate,
+                    **dense_layer_params,
+                ),
             )
 
     def forward(self, block_input):
@@ -55,6 +70,8 @@ class DenseBlock(RichRepr, Module):
         return torch.cat(all_outputs, dim=1)
 
     def __repr__(self):
-        concat_input = f'+{self.in_channels}' if self.concat_input else ''
-        out_channels = f'{self.num_layers}*{self.growth_rate}{concat_input}={self.out_channels}'
+        concat_input = f"+{self.in_channels}" if self.concat_input else ""
+        out_channels = (
+            f"{self.num_layers}*{self.growth_rate}{concat_input}={self.out_channels}"
+        )
         return super(DenseBlock, self).__repr__(self.in_channels, out_channels)
