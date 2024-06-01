@@ -7,7 +7,7 @@ import unittest
 
 from torch.nn import Sequential, ReLU, Linear, Softmax
 
-from dense.utils import RichRepr
+from src.utils import RichRepr
 
 
 class DummyMLP(RichRepr, Sequential):

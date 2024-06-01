@@ -6,8 +6,8 @@ import unittest
 
 import torch
 
-from dense.densenet import DenseNet, DenseNet121, DenseNet161, DenseNet169, DenseNet201
-from dense.utils import count_parameters, count_conv2d
+from src.densenet import DenseNet, DenseNet121, DenseNet161, DenseNet169, DenseNet201
+from src.utils import count_parameters, count_conv2d
 
 
 class TestDenseNet(unittest.TestCase):

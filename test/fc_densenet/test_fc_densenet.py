@@ -5,8 +5,8 @@
 
 import unittest
 
-from dense.fc_densenet import FCDenseNet, FCDenseNet103
-from dense.utils import count_parameters, count_conv2d
+from src.fc_densenet import FCDenseNet, FCDenseNet103
+from src.utils import count_parameters, count_conv2d
 
 import torch
 

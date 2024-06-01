@@ -7,9 +7,9 @@ import unittest
 
 import torch
 
-from dense.fc_densenet.transition_down import TransitionDown
-from dense.fc_densenet.transition_up import TransitionUp, CenterCropConcat
-from dense.utils import count_parameters
+from src.fc_densenet.transition_down import TransitionDown
+from src.fc_densenet.transition_up import TransitionUp, CenterCropConcat
+from src.utils import count_parameters
 
 
 class TestTransition(unittest.TestCase):

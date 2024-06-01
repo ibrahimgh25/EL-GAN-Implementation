@@ -7,8 +7,8 @@ import unittest
 
 import torch
 
-from dense.shared import DenseBlock
-from dense.utils import count_parameters
+from src.shared import DenseBlock
+from src.utils import count_parameters
 
 
 class TestDenseBlock(unittest.TestCase):

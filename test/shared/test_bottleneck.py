@@ -7,8 +7,8 @@ import unittest
 
 import torch
 
-from dense.shared import Bottleneck
-from dense.utils import count_parameters
+from src.shared import Bottleneck
+from src.utils import count_parameters
 
 
 class TestBettleneck(unittest.TestCase):

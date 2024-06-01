@@ -7,8 +7,8 @@ import unittest
 
 import torch
 
-from dense.shared import DenseLayer
-from dense.utils import count_parameters
+from src.shared import DenseLayer
+from src.utils import count_parameters
 
 
 class TestDenseLayer(unittest.TestCase):

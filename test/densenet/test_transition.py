@@ -8,8 +8,8 @@ from math import ceil
 
 import torch
 
-from dense.densenet.transition import Transition
-from dense.utils import count_parameters
+from src.densenet.transition import Transition
+from src.utils import count_parameters
 
 
 class TestTransition(unittest.TestCase):
