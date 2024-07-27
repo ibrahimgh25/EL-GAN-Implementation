@@ -1,4 +1,4 @@
-# This module is for pretraining the generator, all what I did is copy the parts from the 
+# This module is for pretraining the generator, all what I did is copy the parts from the
 # elgan_training.py file and remove all parts related to the discriminator
 import torch
 from torch.optim import Adam
@@ -9,17 +9,21 @@ from torch.optim.lr_scheduler import ExponentialLR
 from training_utils import *
 from training_utils.simplified_models import Generator
 
+
 ########################################################################################
 ######################## Defining and Initializing the Networks ########################
 ########################################################################################
-def initialize(m, nonlinearity='relu'):
-  ''' Just initializaes a model with kaiming_normal'''
-  try:
-    if len(m.weight.size()) > 2:
-      torch.nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity=nonlinearity)
-  except:
-    pass
-  return m
+def initialize(m, nonlinearity="relu"):
+    """Just initializaes a model with kaiming_normal"""
+    try:
+        if len(m.weight.size()) > 2:
+            torch.nn.init.kaiming_normal_(
+                m.weight, mode="fan_out", nonlinearity=nonlinearity
+            )
+    except:
+        pass
+    return m
+
 
 # If there's a GPU we're going to use it
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -30,29 +34,27 @@ generator = Generator().to(device)
 # Initialize the generator
 generator = generator.apply(initialize)
 # Now we create the trainer in an effort to make our code a little less messy
-adam_params = {'lr':5e-4, 'betas':(0.9, 0.99), 'weight_decay':3e-4}
-sgd_params = {'lr':1e-5, 'weight_decay':3e-4}
-scheduler_params = {'gamma':0.99}
-gen_trainer = Trainer(generator, gen_criterion, 
-                      Adam, adam_params,
-                      ExponentialLR, scheduler_params)
+adam_params = {"lr": 5e-4, "betas": (0.9, 0.99), "weight_decay": 3e-4}
+sgd_params = {"lr": 1e-5, "weight_decay": 3e-4}
+scheduler_params = {"gamma": 0.99}
+gen_trainer = Trainer(
+    generator, gen_criterion, Adam, adam_params, ExponentialLR, scheduler_params
+)
 ################################# End Region ###########################################
 
 ########################################################################################
 ######################## Defining the Dataloaders  #####################################
 ########################################################################################
 # The json is the file containing labels for the TrueSimple dataset
-training_json = r'label_data_mini.json'
-testing_json = r'label_data_mini.json'
+training_json = r"label_data_mini.json"
+testing_json = r"label_data_mini.json"
 # The root directory is the directory where the dataset is located
-test_dir = r'C:\Users\user\Desktop\Mini Dataset'
-train_dir = r'C:\Users\user\Desktop\Mini Dataset'
+test_dir = r"C:\Users\user\Desktop\Mini Dataset"
+train_dir = r"C:\Users\user\Desktop\Mini Dataset"
 
-train_set = LaneDataSet(training_json, train_dir)
-test_set = LaneDataSet(testing_json, test_dir)
-loader_params = {'batch_size': 1,
-                 'shuffle': True,
-                 'pin_memory':True}
+train_set = TuSimpleDataset(training_json, train_dir)
+test_set = TuSimpleDataset(testing_json, test_dir)
+loader_params = {"batch_size": 1, "shuffle": True, "pin_memory": True}
 # Create the dataloaders from the defined datasets
 train_gen_loader = DataLoader(train_set, **loader_params)
 test_gen_loader = DataLoader(test_set, **loader_params)
@@ -63,8 +65,8 @@ test_gen_loader = DataLoader(test_set, **loader_params)
 ########################################################################################
 # Prepare tensorboard
 from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('runs/elgan')
 
+writer = SummaryWriter("runs/elgan")
 
 
 EPOCHS = 4
@@ -92,18 +94,18 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         # Save the data and reset running losses every 100 iterations
         if not i % 100 and i != 0:
-          gen_avg = gen_running_loss / 100
-          print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}")
-          current_iter = epoch * len(train_gen_loader) + i
-          writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
-          gen_running_loss = 0.0
-    
+            gen_avg = gen_running_loss / 100
+            print(f"Training -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}")
+            current_iter = epoch * len(train_gen_loader) + i
+            writer.add_scalar("Generator Training Loss", gen_avg, current_iter)
+            gen_running_loss = 0.0
+
     # Save the models after each epoch
-    gen_trainer.save(f'models/generator/generator_epoch_{epoch}.ptmdl')
+    gen_trainer.save(f"models/generator/generator_epoch_{epoch}.ptmdl")
     # Testing the networks
     gen_running_loss = 0.0
     for i, data in enumerate(test_gen_loader):
-      # get the inputs; data is a list of [inputs, labels]
+        # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data
         inputs, labels = inputs.to(device).float(), labels.to(device).float()
         # Loading a datasample might fail at some point,
@@ -119,10 +121,10 @@ for epoch in range(EPOCHS):
         gen_running_loss += gen_loss.item()
         # Save the data and reset running losses every 100 iterations
         if not i % 100 and i != 0:
-          gen_avg = gen_running_loss / 100
-          print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}")
-          current_iter = epoch * len(train_gen_loader) + i
-          writer.add_scalar('Generator Training Loss', gen_avg, current_iter)
-          gen_running_loss = 0.0
+            gen_avg = gen_running_loss / 100
+            print(f"Testing -- Epoch {epoch}, iteration {i}: gen_loss: {gen_avg}")
+            current_iter = epoch * len(train_gen_loader) + i
+            writer.add_scalar("Generator Training Loss", gen_avg, current_iter)
+            gen_running_loss = 0.0
 
 writer.exit()
