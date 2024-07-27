@@ -1,29 +1,33 @@
-from torch import sigmoid
-from torch.nn.modules.activation import LeakyReLU
+from torch.nn.functional import softmax
+
 from ..fc_densenet import FCDenseNet
 
+
+class GeneratorParams:
+    INITIAL_FEATURES = 75
+    NUM_LAYERS_DOWN = [1, 2, 3, 4, 5, 6, 8]
+    NUM_LAYERS_MIDDLE = 8
+    GROWTH_RATE = 18
+    COMPRESSION_FACTOR = 0.5
+    DROPOUT = 0.1
+
+
 class Generator(FCDenseNet):
-    def __init__(self):
-        super().__init__( in_channels = 3,
-                     out_channels = 1,
-                     initial_num_features = 75,
-                     dropout = 0.1,
-
-                    down_dense_growth_rates = 18,
-                    down_dense_bottleneck_ratios = None,
-                    down_dense_num_layers = (1, 2, 3, 4, 5, 6, 8),
-                    down_transition_compression_factors = 0.5,
-
-                    middle_dense_growth_rate = 18,
-                    middle_dense_bottleneck = None,
-                    middle_dense_num_layers = 8,
-
-                    up_dense_growth_rates = 18,
-                    up_dense_bottleneck_ratios = None,
-                    up_dense_num_layers = (8, 6, 5, 4, 3, 2, 1),
-                    
-                    activation=LeakyReLU)
+    def __init__(self, config: GeneratorParams):
+        super().__init__(
+            in_channels=3,
+            out_channels=1,
+            initial_num_features=config.INITIAL_FEATURES,
+            dropout=config.DROPOUT,
+            down_dense_growth_rates=config.GROWTH_RATE,
+            down_dense_num_layers=config.NUM_LAYERS_DOWN,
+            down_transition_compression_factors=config.COMPRESSION_FACTOR,
+            middle_dense_growth_rate=config.GROWTH_RATE,
+            middle_dense_num_layers=config.GROWTH_RATE,
+            up_dense_growth_rates=config.GROWTH_RATE,
+            up_dense_num_layers=reversed(config.NUM_LAYERS_DOWN),
+        )
 
     def forward(self, x):
         res = super().forward(x)
-        return sigmoid(res, dim=1)
+        return softmax(res, dim=1)

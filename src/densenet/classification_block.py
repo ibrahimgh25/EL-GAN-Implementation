@@ -21,7 +21,7 @@ class ClassificationBlock(RichRepr, Sequential):
         self.in_channels = in_channels
         self.out_classes = output_classes
 
-        # self.add_module("norm", BatchNorm2d(num_features=in_channels))
+        self.add_module("norm", BatchNorm2d(num_features=in_channels))
         self.add_module("relu", ReLU(inplace=True))
         self.add_module("pool", AvgPool2d(kernel_size=7, stride=1))
         self.add_module("flatten", Flatten())
